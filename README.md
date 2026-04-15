@@ -23,25 +23,33 @@ Uses the [`gog` CLI](https://github.com/steipete/gogcli) for Gmail/Calendar/Driv
 Full setup takes ~30 minutes from scratch. See **[SETUP.md](SETUP.md)** for step-by-step instructions.
 
 In short:
-1. Install Homebrew and `gog`
+1. Install Homebrew and [`gog`](https://github.com/steipete/gogcli)
 2. Set up a Google Cloud project for OAuth
 3. Connect `gog` to your Gmail
-4. Drop the `skill/SKILL.md` into `~/.claude/scheduled-tasks/email-triage/SKILL.md`
-5. Customize placeholders (accounts, VIP senders, tone, meeting preferences)
+4. Copy `config.example.md` → `~/email-triage/config.md` and fill in your accounts, VIPs, tone, meeting prefs
+5. Copy `skill/SKILL.md` → `~/.claude/scheduled-tasks/email-triage/SKILL.md` (do not edit it)
 6. Enable bypass-permissions mode so it runs without prompts
 7. Create the scheduled task(s) in Claude Code Desktop
 
+## Architecture: logic vs config
+
+The repo separates what you shouldn't touch from what you must customize:
+
+- **`skill/SKILL.md`** — pure agent logic: classification rules, actions, safety checks. **Do not edit.** Drop upstream updates in freely.
+- **`config.example.md`** → user copies to **`~/email-triage/config.md`** — your accounts, VIPs, tone, meeting preferences, project context. **This is the only file you edit.**
+
+When the skill runs, it reads `~/email-triage/config.md` at Step 0 before doing anything else. Your settings never get overwritten when the skill is updated.
+
 ## Customization
 
-Everything lives in **one file**: `skill/SKILL.md`. It's a prompt — edit it like you'd edit instructions for a human assistant.
+Edit one file: `~/email-triage/config.md` (copied from `config.example.md`).
 
-Placeholders to replace:
-- `<YOUR_EMAIL_ALIAS>` and `<YOUR_EMAIL>` — one block per Gmail account you process
-- `<VIP_SENDERS>` — people who should never be filtered
-- `<YOUR_TIMEZONE>` / `<YOUR_SECONDARY_TIMEZONE>` — meeting-time display preferences
-- `<YOUR_CALENDAR_LINK>` — your scheduling link (Cal.com, Google, etc.)
-- `<YOUR_TONE>` — how you want drafts to sound
-- `<YOUR_PROJECT_CONTEXT>` — background context for drafting replies
+Sections to fill in:
+- **Accounts** — one row per Gmail alias you set up with `gog`
+- **VIP Safe Senders** — people who should never be filtered
+- **Meeting Preferences** — default length, timezones, calendar link, hours
+- **Tone and Style** — how drafts should sound in your voice
+- **Project Context** — who you are, what you work on, sensitive topics to flag
 
 ## Safety
 
