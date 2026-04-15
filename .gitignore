@@ -1,0 +1,14 @@
+.DS_Store
+*.swp
+*.swo
+.idea/
+.vscode/
+node_modules/
+
+# Never commit personal state, logs, or credentials
+state.json
+log.md
+*.credentials.json
+client_secret_*.json
+.env
+.env.local
