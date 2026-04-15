@@ -381,11 +381,23 @@ If you set up multi-schedule with symlinks (Part 9), you only need to edit the c
 
 ---
 
-## Security notes
+## Security and privacy notes
 
-- The skill runs on your Mac only. No data leaves your machine except what `gog` sends to Google APIs (same as any Gmail client).
-- OAuth tokens are stored by `gog` in your macOS keychain.
-- The state file (`~/email-triage/state.json`) contains a log of what was auto-sent/drafted. Back it up if you want, but treat it as private.
+**What stays on your Mac:**
+- The SKILL.md prompt
+- `~/email-triage/state.json` (learning state) and `log.md` (run log)
+- `gog` OAuth tokens (stored in your macOS keychain)
+- The cron schedule (Claude Code task metadata)
+
+**What goes to Google:**
+- Gmail/Calendar/Drive API requests via `gog` — same as any Gmail client.
+
+**What goes to Anthropic:**
+- The **full content of every email you triage**, the SKILL.md prompt, your state file contents, and the drafts Claude generates. The model has to read the email content to classify and reply. Anthropic's data handling for your Claude plan applies — see https://www.anthropic.com/legal.
+
+**Practical implications:**
+- Don't run this against accounts containing data you don't want sent to a third-party LLM (NDAs, legal, medical, privileged client communication).
+- The state file contains a log of senders and what was auto-sent/drafted. Back it up if you want, but treat it as private.
 - Bypass-permissions mode is **per-machine**, not synced. Enabling it on one Mac doesn't enable it anywhere else.
 - This repository contains **no credentials** and **no personal data**. The SKILL.md ships with placeholders only.
 

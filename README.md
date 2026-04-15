@@ -16,7 +16,7 @@ An autonomous email triage agent for Claude Code that runs on a schedule, classi
 
 On a schedule you set (e.g., 8am / 12pm / 3pm / 6pm / 9pm daily), via **Claude Code Desktop's local Scheduled Tasks** feature. Runs fully unattended with the bypass-permissions setup in `SETUP.md`.
 
-Uses the [`gog` CLI](https://github.com/steipete/gogcli) for Gmail/Calendar/Drive access. Runs locally on your Mac — no cloud, no third-party data sharing.
+Uses the [`gog` CLI](https://github.com/steipete/gogcli) for Gmail/Calendar/Drive access. The orchestration (gog calls, scheduled tasks, state file) runs locally on your Mac, but **email content is sent to Anthropic** for Claude to read, classify, and draft replies — same as any Claude conversation. See [Privacy](#privacy) below.
 
 ## Quick start
 
@@ -61,6 +61,16 @@ Even in bypass-permissions mode, the skill creates **drafts** for anything below
 - Claude Code Desktop app ([download](https://claude.com/claude-code))
 - Claude Pro or Max plan
 - Gmail account(s) with API access (free to set up)
+
+## Privacy
+
+Be aware of what data goes where:
+
+- **Stays on your Mac**: the SKILL.md, the `~/email-triage/state.json` learning state, the `~/email-triage/log.md` run log, your `gog` OAuth tokens, and the cron schedule.
+- **Goes to Google**: your Gmail/Calendar/Drive API requests, via `gog` (same as any Gmail client).
+- **Goes to Anthropic**: the **content of every email you triage**, the prompt, the state file, and the drafts Claude generates. This is how the model classifies and writes replies — it has to read the email content. Anthropic's data handling policies for your Claude plan apply (see https://www.anthropic.com/legal).
+
+If you have emails you don't want sent to a third-party LLM at all (NDAs, legal, medical, etc.), don't triage those accounts with this — or filter them out of the unread set before classification.
 
 ## License
 
